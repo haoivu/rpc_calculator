@@ -34,11 +34,15 @@ class Delegator(rpyc.Service):
     def exposed_sub(self, a, b):
         return a - b
 
-    def checker(self, input=''):
+    def exposed_checker(self, input):
         print(input)
-        if input.split()[-1] == '/':
+        if input[-1] == '/':
+            print('yes')
             conn = rpyc.connect("localhost", 12346)
-            x = conn.root.add(4, 7)
+            x = conn.root.div(4, 7)
+        else:
+            print('nah')
+            print(input[-1])
 
 
 if __name__ == "__main__":

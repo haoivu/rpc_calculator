@@ -1,10 +1,14 @@
 import rpyc
+import sys
+
+print(sys.argv)
+
 
 conn = rpyc.connect("localhost", 12345)
-x = conn.root.add(4, 7)
-assert x == 11
+x = conn.root.checker(sys.argv)
+# assert x == 11
 print(x)
-
+exit()
 try:
     y = conn.root.div(4,0)
     print(y)
