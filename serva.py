@@ -13,23 +13,23 @@ class Delegator(rpyc.Service):
         print(args)
 
         if '+' in args:
-            return self.add(args[0], args[1])
+            return self.add(args[0], args[2])
         elif '-' in args:
-            return self.sub(args[0], args[1])
+            return self.sub(args[0], args[2])
         elif '/' in args:
             print('fjslka1')
             conn = rpyc.connect("localhost", 12346)
-            x = conn.root.div(args[0], args[1])
+            x = conn.root.div(args[0], args[2])
             conn.close()
             return x
         elif '*' in args:
             conn = rpyc.connect("localhost", 12346)
-            x = conn.root.mul(args[0], args[1])
+            x = conn.root.mul(args[0], args[2])
             conn.close()
             return x
         elif '**' in args:
             conn = rpyc.connect("localhost", 12347)
-            x = conn.root.power(args[0], args[1])
+            x = conn.root.power(args[0], args[2])
             conn.close()
             return x
 
