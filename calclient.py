@@ -3,20 +3,19 @@ import sys
 import builtins
 
 
-def get_indices(arr, symbol):
-    return [i for i, value in enumerate(arr) if value == symbol]
+def get_indices(arr, symbols):
+    return [i for i, value in enumerate(arr) if value in symbols]
 
 
 def parse_gen(arr):
-    # Have to fix that */ and +- are same priority!!!!
-    for symbol in ['**', '*', '/', '+', '-']:
+    for symbols in [['**'], ['*', '/'], ['+', '-']]:
         index_mover = 0
 
         #def print(*args):
          #   if symbol == '+':
           #      builtins.print(*args)
 
-        for index in get_indices(arr, symbol):
+        for index in get_indices(arr, symbols):
             conn = rpyc.connect("localhost", 12345)
             x = conn.root.checker(arr[index-1-index_mover:index+2-index_mover])
             front = arr[:index-1-index_mover]
@@ -28,7 +27,7 @@ def parse_gen(arr):
             simplified = front + [x] + back
             arr = simplified
             index_mover += 2
-            print('After ', symbol)
+            print('After ', symbols)
             print(arr, '\n')
 
     assert len(arr) == 1, arr
