@@ -1,86 +1,35 @@
 import rpyc
 import sys
+import builtins
 
 
 def get_indices(arr, symbol):
-    indices = []
-    for i, value in enumerate(arr):
-        if value == symbol:
-            indices.append(i)
-    return indices
+    return [i for i, value in enumerate(arr) if value == symbol]
 
 
 def parse_gen(arr):
+    # Have to fix that */ and +- are same priority!!!!
+    for symbol in ['**', '*', '/', '+', '-']:
+        index_mover = 0
 
-    index_mover = 0
-    for index in get_indices(arr, '**'):
-        conn = rpyc.connect("localhost", 12345)
-        x = conn.root.checker(arr[index-1-index_mover:index+2-index_mover])
-        front = arr[:index-1-index_mover]
-        if (index+2-index_mover) == len(arr):
-            # End of array
-            back = []
-        else:
-            back = arr[index+2-index_mover:]
-        simplified = front + [x] + back
-        arr = simplified
-        index_mover -= 2
+        #def print(*args):
+         #   if symbol == '+':
+          #      builtins.print(*args)
 
-    index_mover = 0
-    for index in get_indices(arr, '*'):
-        conn = rpyc.connect("localhost", 12345)
-        x = conn.root.checker(arr[index - 1 - index_mover:index + 2 - index_mover])
-        front = arr[:index - 1 - index_mover]
-        if (index + 2 - index_mover) == len(arr):
-            # End of array
-            back = []
-        else:
-            back = arr[index + 2 - index_mover:]
-        simplified = front + [x] + back
-        arr = simplified
-        index_mover -= 2
-
-    index_mover = 0
-    for index in get_indices(arr, '/'):
-        conn = rpyc.connect("localhost", 12345)
-        x = conn.root.checker(arr[index - 1 - index_mover:index + 2 - index_mover])
-        front = arr[:index - 1 - index_mover]
-        if (index + 2 - index_mover) == len(arr):
-            # End of array
-            back = []
-        else:
-            back = arr[index + 2 - index_mover:]
-        simplified = front + [x] + back
-        arr = simplified
-        index_mover -= 2
-
-    index_mover = 0
-    for index in get_indices(arr, '+'):
-        conn = rpyc.connect("localhost", 12345)
-        x = conn.root.checker(arr[index - 1 - index_mover:index + 2 - index_mover])
-        front = arr[:index - 1 - index_mover]
-        if (index + 2 - index_mover) == len(arr):
-            # End of array
-            back = []
-        else:
-            back = arr[index + 2 - index_mover:]
-        simplified = front + [x] + back
-        arr = simplified
-        index_mover -= 2
-
-    index_mover = 0
-    for index in get_indices(arr, '-'):
-        conn = rpyc.connect("localhost", 12345)
-        x = conn.root.checker(arr[index - 1 - index_mover:index + 2 - index_mover])
-        front = arr[:index - 1 - index_mover]
-        if (index + 2 - index_mover) == len(arr):
-            # End of array
-            back = []
-        else:
-            back = arr[index + 2 - index_mover:]
-        simplified = front + [x] + back
-        arr = simplified
-        index_mover -= 2
+        for index in get_indices(arr, symbol):
+            conn = rpyc.connect("localhost", 12345)
+            x = conn.root.checker(arr[index-1-index_mover:index+2-index_mover])
+            front = arr[:index-1-index_mover]
+            if (index+2-index_mover) == len(arr):
+                # End of array
+                back = []
+            else:
+                back = arr[index+2-index_mover:]
+            simplified = front + [x] + back
+            arr = simplified
+            index_mover += 2
+            print('After ', symbol)
+            print(arr, '\n')
 
     assert len(arr) == 1, arr
     return arr[0]
