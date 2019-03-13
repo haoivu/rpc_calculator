@@ -60,16 +60,10 @@ else:
     args = sys.argv[1:]
 
 print(args)
-conn = rpyc.connect("localhost", 12345)
-#x = conn.root.checker(args)
-x = parse_gen(args)
-print(x)
-exit()
 
 try:
-    y = conn.root.div(4,0)
-    print(y)
+    x = parse_gen(args)
+    print(x)
 except ZeroDivisionError:
     print("ZeroDivisionError")
     pass
-conn.close()
