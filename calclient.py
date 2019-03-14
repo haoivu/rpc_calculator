@@ -66,11 +66,12 @@ def parenth2(arr):
         #print(arr)
         arr = arr[:lpar] + [parse_gen(arr[lpar+1:rpar-1])] + arr[rpar:]
         print(arr)
-        parenth2(arr)
+        return parenth2(arr)
     else:
-        parse_gen(arr)
+        return parse_gen(arr)
 
 print(sys.argv)
+
 args = []
 if len(sys.argv) == 1:
     print('Please enter arguments')
@@ -81,10 +82,8 @@ else:
     args = sys.argv[1:]
 
 print(args)
-parenth2(args)
-exit()
 try:
-    x = parse_gen(args)
+    x = parenth2(args)
     print(x)
 except ZeroDivisionError:
     print("ZeroDivisionError")
