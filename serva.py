@@ -2,20 +2,22 @@ import rpyc
 from rpyc.utils.server import ThreadedServer  # or ForkingServer
 
 
+def sub(a, b):
+    return float(a) - float(b)
+
+
+def add(a, b):
+    return float(a) + float(b)
+
+
 class Delegator(rpyc.Service):
-    def add(self, a, b):
-        return float(a) + float(b)
-
-    def sub(self, a, b):
-        return float(a) - float(b)
-
     def exposed_checker(self, args):
         print(args)
 
         if '+' in args:
-            return self.add(args[0], args[2])
+            return add(args[0], args[2])
         elif '-' in args:
-            return self.sub(args[0], args[2])
+            return sub(args[0], args[2])
         elif '/' in args:
             print('fjslka1')
             conn = rpyc.connect("localhost", 12346)

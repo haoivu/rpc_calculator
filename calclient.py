@@ -42,12 +42,33 @@ def parenth(arr):
             lparen.append(i)
         elif value == ')':
             rparen.append(i)
+
         print(i, value)
     assert len(lparen) == len(rparen), 'Error: parenthesis mismatch'
 
     for i in range(len(rparen)-1, -1, -1):
         pass
 
+
+def listRightIndex(alist, value):
+    return len(alist) - alist[-1::-1].index(value) - 1
+
+
+def parenth2(arr):
+    if '(' in arr:
+        assert arr.count('(') == arr.count(')'), 'Error: parenthesis mismatch'
+        rpar = arr.index(')') + 1
+        lpar = listRightIndex(arr[:rpar], '(')
+
+        print(arr[lpar:rpar])
+        #print(lpar)
+        #print(rpar)
+        #print(arr)
+        arr = arr[:lpar] + [parse_gen(arr[lpar+1:rpar-1])] + arr[rpar:]
+        print(arr)
+        parenth2(arr)
+    else:
+        parse_gen(arr)
 
 print(sys.argv)
 args = []
@@ -60,7 +81,8 @@ else:
     args = sys.argv[1:]
 
 print(args)
-
+parenth2(args)
+exit()
 try:
     x = parse_gen(args)
     print(x)
